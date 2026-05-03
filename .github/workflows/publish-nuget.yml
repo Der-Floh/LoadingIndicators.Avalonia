@@ -2,10 +2,10 @@ name: Publish NuGet Package
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 permissions:
-  contents: read
+  contents: write
   id-token: write
 
 jobs:
@@ -14,21 +14,36 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Extract version from tag
+        id: version
+        run: echo "value=$(echo '${{ github.ref_name }}' | sed 's/^v//')" >>
+          $GITHUB_OUTPUT
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: "8.0.x"
 
       - name: Restore
         run: dotnet restore LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
 
       - name: Build
-        run: dotnet build LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj -c Release --no-restore
+        run: dotnet build LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
+          -c Release --no-restore -p:GeneratePackageOnBuild=false
 
       - name: Pack
-        run: dotnet pack LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj -c Release --no-build -o ./artifacts
+        run: dotnet pack LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj -c
+          Release --no-build -o ./artifacts -p:Version=${{
+          steps.version.outputs.value }}
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            ./artifacts/*.nupkg
+            ./artifacts/*.snupkg
 
       - name: NuGet login
         uses: NuGet/login@v1
@@ -37,8 +52,12 @@ jobs:
           user: Der-Floh
 
       - name: Publish to NuGet.org
-        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json" --skip-duplicate
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{
+          steps.login.outputs.NUGET_API_KEY }}" --source
+          "https://api.nuget.org/v3/index.json" --skip-duplicate
 
       - name: Publish symbols to NuGet.org
-        run: dotnet nuget push "./artifacts/*.snupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source "https://api.nuget.org/v3/index.json"
+        run: dotnet nuget push "./artifacts/*.snupkg" --api-key "${{
+          steps.login.outputs.NUGET_API_KEY }}" --source
+          "https://api.nuget.org/v3/index.json"
         continue-on-error: true

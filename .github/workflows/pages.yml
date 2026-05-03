@@ -10,76 +10,63 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 env:
   PROJECT_PATH: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/LoadingIndicators.Avalonia.Demo.Browser.csproj
-  TFM: net10.0-browser
 
 jobs:
-  deploy-to-github-pages:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v6
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
-          dotnet-version: '10.0.x'
+          dotnet-version: "10.0.x"
 
       - name: Install wasm-tools
-        run: dotnet workload install wasm-tools-net8
+        run: dotnet workload install wasm-tools
 
       - name: Publish .NET Project
-        run: dotnet publish "$PROJECT_PATH" -c Release --nologo
-
-      - name: Locate publish output
-        id: out
-        shell: bash
-        run: |
-          set -euo pipefail
-          ROOT="$(dirname "$PROJECT_PATH")"
-
-          CANDIDATE1="$ROOT/bin/Release/${TFM}/publish/wwwroot"
-          CANDIDATE2="$ROOT/bin/Release/${TFM}/release/wwwroot"
-          CANDIDATE3="$ROOT/bin/Release/${TFM}/browser-wasm/AppBundle"
-
-          if [ -d "$CANDIDATE1" ]; then OUT="$CANDIDATE1"
-          elif [ -d "$CANDIDATE2" ]; then OUT="$CANDIDATE2"
-          elif [ -d "$CANDIDATE3" ]; then OUT="$CANDIDATE3"
-          else
-            echo "Could not locate wwwroot. Checked:"
-            echo "  $CANDIDATE1"
-            echo "  $CANDIDATE2"
-            echo "  $CANDIDATE3"
-            exit 1
-          fi
-
-          echo "dir=$OUT" >> "$GITHUB_OUTPUT"
-          echo "Using publish dir: $OUT"
+        run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output
 
       - name: Prepare Pages artifacts
         run: |
-          mkdir -p site
-          cp -r "${{ steps.out.outputs.dir }}/." site/
+          touch publish-output/wwwroot/.nojekyll
 
-          # Ensure GitHub Pages serves _framework and friends
-          touch site/.nojekyll
-
-          # Adjust <base href> for /<repo>/ hosting
-          REPO="${GITHUB_REPOSITORY#*/}"
-          if grep -q '<base href="/"' site/index.html; then
-            sed -i "s#<base href=\"/\"#<base href=\"/${REPO}/\"#g" site/index.html
+          BASE_PATH="${{ steps.pages.outputs.base_path }}"
+          if [ "$BASE_PATH" != "/" ] && grep -q '<base href="/"' publish-output/wwwroot/index.html; then
+            sed -i "s#<base href=\"/\"#<base href=\"${BASE_PATH}/\"#g" publish-output/wwwroot/index.html
           fi
 
-          # SPA-style fallback
-          cp site/index.html site/404.html || true
+          cp publish-output/wwwroot/index.html publish-output/wwwroot/404.html
 
-      - name: Deploy to gh-pages
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
         with:
-          branch: gh-pages
-          folder: site
-          clean: true
+          path: publish-output/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

@@ -7,24 +7,26 @@
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <ImplicitUsings>enable</ImplicitUsings>
+    <DebugType>portable</DebugType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <PropertyGroup>
     <Title>LoadingIndicators.Avalonia</Title>
-    <Version>3.0.1</Version>
+    <Version>0.0.0</Version>
     <Authors>Der_Floh</Authors>
     <Description>A collection of loading indicators for Avalonia</Description>
-    <Copyright>moviegear © $([System.DateTime]::Now.Year)</Copyright>
-    <PackageProjectUrl>https://github.com/Der-Floh/LoadingIndicators.Avalonia/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Der-Floh/LoadingIndicators.Avalonia.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/Der-Floh/LoadingIndicators.Avalonia</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Der-Floh/LoadingIndicators.Avalonia</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>avalonia, avalonia-ui, loading-animations, loading-spinner, loading-indicator, loading</PackageTags>
     <PackageId>LoadingIndicators.Avalonia.New</PackageId>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,6 +38,10 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="[11.1.0,12.0.0)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
     <PackageReference Include="Avalonia" Version="[11.1.0,)" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

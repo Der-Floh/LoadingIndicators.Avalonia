@@ -1,0 +1,34 @@
+name: CI
+
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v5
+              with:
+                  dotnet-version: "8.0.x"
+
+            - name: Restore
+              run: dotnet restore LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
+
+            - name: Build
+              run: dotnet build LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
+                  -c Release --no-restore -p:GeneratePackageOnBuild=false
