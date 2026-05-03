@@ -10,7 +10,6 @@
     <DebugType>portable</DebugType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <WasmBuildNative>true</WasmBuildNative>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -38,7 +37,7 @@
 
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="[11.1.0,12.0.0)" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
-    <PackageReference Include="Avalonia" Version="[11.1.0,)" Condition="'$(TargetFramework)' == 'net8.0'" />
+    <PackageReference Include="Avalonia" Version="[12.0.0,)" Condition="'$(TargetFramework)' == 'net8.0'" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.203">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
