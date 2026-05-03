@@ -14,7 +14,6 @@ permissions:
 
 env:
   PROJECT_PATH: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/LoadingIndicators.Avalonia.Demo.Browser.csproj
-  OUTPUT_PATH: publish-output/wwwroot
 
 jobs:
   build:
@@ -40,22 +39,22 @@ jobs:
         run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output
 
       - name: copy index.html to 404.html
-        run: cp $OUTPUT_PATH/index.html $OUTPUT_PATH/404.html
+        run: cp publish-output/wwwroot/index.html publish-output/wwwroot/404.html
 
       - name: Add .nojekyll file
-        run: touch $OUTPUT_PATH/.nojekyll
+        run: touch publish-output/wwwroot/.nojekyll
 
       - name: Prepare Pages artifacts
         run: |
           BASE_PATH="${{ steps.pages.outputs.base_path }}"
-          if [ "$BASE_PATH" != "/" ] && grep -q '<base href="/"' $OUTPUT_PATH/index.html; then
-            sed -i "s#<base href=\"/\"#<base href=\"${BASE_PATH}/\"#g" $OUTPUT_PATH/index.html
+          if [ "$BASE_PATH" != "/" ] && grep -q '<base href="/"' publish-output/wwwroot/index.html; then
+            sed -i "s#<base href=\"/\"#<base href=\"${BASE_PATH}/\"#g" publish-output/wwwroot/index.html
           fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: $OUTPUT_PATH
+          path: publish-output/wwwroot
           include-hidden-files: true
 
   deploy:
