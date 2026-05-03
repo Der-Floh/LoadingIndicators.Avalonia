@@ -43,13 +43,7 @@ public class LoadingIndicator : TemplatedControl
         set => SetValue(ThicknessProperty, value);
     }
 
-    private static readonly Dictionary<LoadingIndicatorMode, ControlTheme> _themes;
-
-    static LoadingIndicator()
-    {
-        if (!TryGetThemes(out _themes))
-            throw new NullReferenceException("Failed to get control themes");
-    }
+    private static Dictionary<LoadingIndicatorMode, ControlTheme>? _themes;
 
     public LoadingIndicator()
     {
@@ -89,7 +83,9 @@ public class LoadingIndicator : TemplatedControl
 
     private void UpdateTheme()
     {
-        if (_themes.TryGetValue(Mode, out var theme))
+        if (_themes is null || _themes.Count == 0)
+            TryGetThemes(out _themes);
+        if (_themes is not null && _themes.TryGetValue(Mode, out var theme))
             Theme = theme;
     }
 
