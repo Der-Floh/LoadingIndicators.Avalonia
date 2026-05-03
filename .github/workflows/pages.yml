@@ -36,7 +36,7 @@ jobs:
         run: dotnet workload install wasm-tools
 
       - name: Publish .NET Project
-        run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output -p:WasmEnableThreads=false
+        run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output -p:WasmShellWebAppBasePath=./
 
       - name: Prepare Pages artifacts
         run: |
