@@ -37,7 +37,6 @@ jobs:
 
       - name: Publish .NET Project
         run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output
-          -p:CompressionEnabled=false
 
       - name: Prepare Pages artifacts
         run: |
