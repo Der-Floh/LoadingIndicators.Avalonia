@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <TrimmerRootAssembly Include="LoadingIndicators.Avalonia" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LoadingIndicators.Avalonia.Demo\LoadingIndicators.Avalonia.Demo.csproj" />
   </ItemGroup>
 </Project>
