@@ -10,22 +10,19 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PROJECT_PATH: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/LoadingIndicators.Avalonia.Demo.Browser.csproj
+  OUTPUT_PATH: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/bin/Release/net10.0-browser/publish/wwwroot
 
 jobs:
-  build:
+  deploy-to-github-pages:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
-      - name: Configure Pages
-        id: pages
-        uses: actions/configure-pages@v6
 
       - name: Setup .NET 10
         uses: actions/setup-dotnet@v5
@@ -36,40 +33,17 @@ jobs:
         run: dotnet workload install wasm-tools
 
       - name: Publish .NET Project
-        run: dotnet publish "$PROJECT_PATH" -c Release --nologo -o ./publish-output
+        run: dotnet publish "$PROJECT_PATH" -c Release --nologo
 
-      - name: copy index.html to 404.html
-        run: cp publish-output/wwwroot/index.html publish-output/wwwroot/404.html
+      - name: Copy index.html to 404.html
+        run: cp "$OUTPUT_PATH/index.html" "$OUTPUT_PATH/404.html"
 
       - name: Add .nojekyll file
-        run: touch publish-output/wwwroot/.nojekyll
+        run: touch "$OUTPUT_PATH/.nojekyll"
 
-      - name: Prepare Pages artifacts
-        run: |
-          BASE_PATH="${{ steps.pages.outputs.base_path }}"
-          if [ "$BASE_PATH" != "/" ] && grep -q '<base href="/"' publish-output/wwwroot/index.html; then
-            sed -i "s#<base href=\"/\"#<base href=\"${BASE_PATH}/\"#g" publish-output/wwwroot/index.html
-          fi
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
+      - name: Deploy to gh-pages
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          path: publish-output/wwwroot
-          include-hidden-files: true
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-
-    permissions:
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
+          branch: gh-pages
+          folder: ${{ env.OUTPUT_PATH }}
+          single-commit: true
