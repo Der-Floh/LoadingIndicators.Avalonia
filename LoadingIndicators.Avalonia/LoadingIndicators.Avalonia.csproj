@@ -10,6 +10,7 @@
     <DebugType>portable</DebugType>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <WasmBuildNative>true</WasmBuildNative>
   </PropertyGroup>
 
   <PropertyGroup>
