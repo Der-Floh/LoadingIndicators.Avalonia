@@ -6,7 +6,8 @@
              x:Class="LoadingIndicators.Avalonia.Demo.Views.MainView"
              Background="#222222">
 
-    <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
+    <TextBlock Text="LoadingIndicators.Avalonia Demo" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,10,0,0" FontSize="20" Foreground="White" />
+    <!-- <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
         <LoadingIndicator Grid.Row="0" Grid.Column="0" Mode="Arc" />
         <LoadingIndicator Grid.Row="0" Grid.Column="1" Mode="ArcEase" />
         <LoadingIndicator Grid.Row="0" Grid.Column="2" Mode="ArcGrow" />
@@ -18,6 +19,6 @@
         <LoadingIndicator Grid.Row="2" Grid.Column="0" Mode="Ring" />
         <LoadingIndicator Grid.Row="2" Grid.Column="1" Mode="ThreeDots" />
         <LoadingIndicator Grid.Row="2" Grid.Column="2" Mode="Wave" />
-    </Grid>
+    </Grid> -->
 
 </UserControl>

@@ -6,6 +6,6 @@
 
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://LoadingIndicators.Avalonia/LoadingIndicators.axaml" />
+        <!-- <StyleInclude Source="avares://LoadingIndicators.Avalonia/LoadingIndicators.axaml" /> -->
     </Application.Styles>
 </Application>

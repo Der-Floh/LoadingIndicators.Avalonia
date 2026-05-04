@@ -47,14 +47,7 @@ public class LoadingIndicator : TemplatedControl
 
     public LoadingIndicator()
     {
-        try
-        {
-            UpdateTheme();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[LoadingIndicator] Constructor failed: {ex}");
-        }
+        UpdateTheme();
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -77,30 +70,24 @@ public class LoadingIndicator : TemplatedControl
         controlThemes = [];
         if (Application.Current is null)
             return false;
-        try
-        {
+
 #if NETSTANDARD2_0
-            var modes = (LoadingIndicatorMode[])Enum.GetValues(typeof(LoadingIndicatorMode));
+        var modes = (LoadingIndicatorMode[])Enum.GetValues(typeof(LoadingIndicatorMode));
 #else
             var modes = Enum.GetValues<LoadingIndicatorMode>();
 #endif
-            foreach (LoadingIndicatorMode mode in modes)
-            {
+        foreach (LoadingIndicatorMode mode in modes)
+        {
 #if NETSTANDARD2_0
-                var name = Enum.GetName(typeof(LoadingIndicatorMode), mode)!;
+            var name = Enum.GetName(typeof(LoadingIndicatorMode), mode)!;
 #else
                 var name = Enum.GetName(mode)!;
 #endif
-                if (!Application.Current.TryGetResource(name, null, out var resource))
-                    continue;
-                if (resource is not ControlTheme theme)
-                    continue;
-                controlThemes.Add(mode, theme);
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"[LoadingIndicator] TryGetThemes failed: {ex}");
+            if (!Application.Current.TryGetResource(name, null, out var resource))
+                continue;
+            if (resource is not ControlTheme theme)
+                continue;
+            controlThemes.Add(mode, theme);
         }
         return controlThemes.Count > 0;
     }
