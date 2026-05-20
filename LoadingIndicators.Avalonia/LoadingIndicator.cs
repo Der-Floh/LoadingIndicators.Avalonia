@@ -76,7 +76,7 @@ public class LoadingIndicator : TemplatedControl
 #else
             var modes = Enum.GetValues<LoadingIndicatorMode>();
 #endif
-        foreach (LoadingIndicatorMode mode in modes)
+        foreach (var mode in modes)
         {
 #if NETSTANDARD2_0
             var name = Enum.GetName(typeof(LoadingIndicatorMode), mode)!;

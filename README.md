@@ -1,36 +1,36 @@
-# LoadingIndicators.Avalonia
+# ![LoadingIndicators.Avalonia icon](https://raw.githubusercontent.com/Der-Floh/LoadingIndicators.Avalonia/master/Assets/icon-x64.png) LoadingIndicators.Avalonia
 
-[![Nuget](https://img.shields.io/nuget/v/LoadingIndicators.Avalonia.New)](https://www.nuget.org/packages/LoadingIndicators.Avalonia.New)
+[![NuGet Version](https://img.shields.io/nuget/vpre/LoadingIndicators.Avalonia.New)](https://www.nuget.org/packages/LoadingIndicators.Avalonia.New)
+[![NuGet Downloads](https://img.shields.io/nuget/dt/LoadingIndicators.Avalonia.New)](https://www.nuget.org/packages/LoadingIndicators.Avalonia.New)
 
-![Demo](https://raw.githubusercontent.com/der-floh/LoadingIndicators.Avalonia/master/.github/demo.gif)
+![Demo](https://raw.githubusercontent.com/der-floh/LoadingIndicators.Avalonia/master/Assets/demo.gif)
 
 [Online demo](https://der-floh.github.io/LoadingIndicators.Avalonia)
 
-LoadingIndicators.Avalonia is an adaptation for Avalonia of the [LoadingIndicators.WPF](https://github.com/zeluisping/LoadingIndicators.WPF) collection of 9 animated loading indicators.
+**`LoadingIndicators.Avalonia`** is an adaptation for Avalonia of the [LoadingIndicators.WPF](https://github.com/zeluisping/LoadingIndicators.WPF) collection of animated loading indicators. It provides 11 ready-to-use animated spinner styles as a single `LoadingIndicator` control.
 
-## Themes
+## Installation
 
-- Arc
-- Arc Ease
-- Arc Grow
-- Arcs
-- Arcs Ring
-- Double Bounce
-- FlipPlane
-- Pulse
-- Ring
-- Three Dots
-- Wave
+```sh
+dotnet add package LoadingIndicators.Avalonia.New
+```
 
-## Features
+**Requirements**: .NET Standard 2.0 or later (Avalonia 11.x), or .NET 8.0 or later (Avalonia 12.x+).
 
-- Easy activation/deactivation
-- Easy theme change
-- Adjustable animation speed
+## Key Features
 
-## Usage
+- **11 Built-in Animation Styles**: Choose from Arc, ArcEase, ArcGrow, Arcs, ArcsRing, DoubleBounce, FlipPlane, Pulse, Ring, ThreeDots, and Wave.
+- **Easy Activation**: Toggle the indicator on and off with the `IsActive` property.
+- **Adjustable Speed**: Control animation speed independently of other UI elements via `SpeedRatio`.
+- **Customisable Stroke**: Adjust line thickness for arc-based styles with the `Thickness` property.
+- **Cross-Platform**: Runs on all platforms supported by Avalonia (Windows, macOS, Linux, Browser, Mobile).
+- **Compiled Bindings**: Uses Avalonia compiled bindings by default for improved performance.
 
-1. Add Styles in `App.axaml`
+## Getting Started
+
+### Setup
+
+Add the styles to `App.axaml` so all `LoadingIndicator` controls in your application can resolve their themes:
 
 ```xml
 <Application.Styles>
@@ -39,8 +39,46 @@ LoadingIndicators.Avalonia is an adaptation for Avalonia of the [LoadingIndicato
 </Application.Styles>
 ```
 
-1. Add indicator and select mode
+### Basic Usage
+
+Place a `LoadingIndicator` in any view and bind `IsActive` to your view-model's busy flag:
 
 ```xml
-<LoadingIndicator IsActive="{Binding IsBusy}" Mode="Arcs" SpeedRatio="1.5" Thickness="4" />
+<LoadingIndicator IsActive="{Binding IsBusy}" Mode="Arcs" />
 ```
+
+Optionally adjust speed and thickness:
+
+```xml
+<LoadingIndicator IsActive="{Binding IsBusy}" Mode="Arc" SpeedRatio="1.5" Thickness="4" />
+```
+
+### LoadingIndicator Properties
+
+| Property     | Type                   | Default | Description                                             |
+| ------------ | ---------------------- | ------- | ------------------------------------------------------- |
+| `IsActive`   | `bool`                 | `true`  | Shows or hides the animation                            |
+| `Mode`       | `LoadingIndicatorMode` | `Arc`   | Selects the animation style                             |
+| `SpeedRatio` | `double`               | `1.5`   | Multiplier for the animation speed (1.0 = normal speed) |
+| `Thickness`  | `double`               | `4`     | Stroke thickness used by arc-based animation styles     |
+
+### Available Modes
+
+| Mode           | Description                                                                                  |
+| -------------- | -------------------------------------------------------------------------------------------- |
+| `Arc`          | A single 270° arc that spins continuously                                                    |
+| `ArcEase`      | A short quarter-arc spinning around a faint full-circle track with cubic ease-in-out easing  |
+| `ArcGrow`      | Two concentric arcs where the outer rotates fully and the inner oscillates, varying the gap  |
+| `Arcs`         | Two concentric arcs counter-rotating at different speeds                                     |
+| `ArcsRing`     | Short arc segments arranged in a ring that flash bright in sequence with staggered delays    |
+| `DoubleBounce` | Two overlapping circles that simultaneously scale in opposite directions                     |
+| `FlipPlane`    | A rectangle that alternately collapses vertically then horizontally, simulating a plane flip |
+| `Pulse`        | A circle that expands from nothing while fading out, creating a ripple effect                |
+| `Ring`         | Small dots arranged in a circle that pulse in and out in sequence                            |
+| `ThreeDots`    | Three dots that sequentially pop in and out with staggered delays                            |
+| `Wave`         | Five vertical bars that scale up and down in a rolling wave pattern                          |
+
+## Dependencies
+
+- [Avalonia](https://www.nuget.org/packages/Avalonia/) `[11.1.0, 12.0.0)` *(netstandard2.0)*
+- [Avalonia](https://www.nuget.org/packages/Avalonia/) `[12.0.0, )` *(net8.0)*
