@@ -17,7 +17,7 @@ public class LoadingIndicator : TemplatedControl
     public static readonly StyledProperty<LoadingIndicatorMode> ModeProperty =
         AvaloniaProperty.Register<LoadingIndicator, LoadingIndicatorMode>(nameof(Mode));
     public static readonly StyledProperty<double> SpeedRatioProperty =
-        AvaloniaProperty.Register<LoadingIndicator, double>(nameof(SpeedRatio), 1.5);
+        AvaloniaProperty.Register<LoadingIndicator, double>(nameof(SpeedRatio), 1.0);
     public static readonly StyledProperty<double> ThicknessProperty =
         AvaloniaProperty.Register<LoadingIndicator, double>(nameof(Thickness), 4);
     // ReSharper restore InconsistentNaming
@@ -74,14 +74,14 @@ public class LoadingIndicator : TemplatedControl
 #if NETSTANDARD2_0
         var modes = (LoadingIndicatorMode[])Enum.GetValues(typeof(LoadingIndicatorMode));
 #else
-            var modes = Enum.GetValues<LoadingIndicatorMode>();
+        var modes = Enum.GetValues<LoadingIndicatorMode>();
 #endif
         foreach (var mode in modes)
         {
 #if NETSTANDARD2_0
             var name = Enum.GetName(typeof(LoadingIndicatorMode), mode)!;
 #else
-                var name = Enum.GetName(mode)!;
+            var name = Enum.GetName(mode)!;
 #endif
             if (!Application.Current.TryGetResource(name, null, out var resource))
                 continue;

@@ -483,3 +483,5 @@ FodyWeavers.xsd
 # Custom
 artifacts/
 *.lscache
+copilot-instructions.md
+.LoaderReferences/

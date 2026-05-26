@@ -3,21 +3,29 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="300"
-             x:Class="LoadingIndicators.Avalonia.Demo.Views.MainView"
-             Background="#222222">
+             x:Class="LoadingIndicators.Avalonia.Demo.Views.MainView">
 
-    <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*,*,*">
+    <Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*,*,*,*">
         <LoadingIndicator Grid.Row="0" Grid.Column="0" Mode="Arc" />
         <LoadingIndicator Grid.Row="0" Grid.Column="1" Mode="ArcEase" />
         <LoadingIndicator Grid.Row="0" Grid.Column="2" Mode="ArcGrow" />
         <LoadingIndicator Grid.Row="0" Grid.Column="3" Mode="Arcs" />
         <LoadingIndicator Grid.Row="1" Grid.Column="0" Mode="ArcsRing" />
-        <LoadingIndicator Grid.Row="1" Grid.Column="1" Mode="DoubleBounce" />
-        <LoadingIndicator Grid.Row="1" Grid.Column="2" Mode="FlipPlane" />
+        <LoadingIndicator Grid.Row="1" Grid.Column="1" Mode="Bounce" />
+        <LoadingIndicator Grid.Row="1" Grid.Column="2" Mode="Plane" />
         <LoadingIndicator Grid.Row="1" Grid.Column="3" Mode="Pulse" />
-        <LoadingIndicator Grid.Row="2" Grid.Column="0" Mode="Ring" />
-        <LoadingIndicator Grid.Row="2" Grid.Column="1" Mode="ThreeDots" />
+        <LoadingIndicator Grid.Row="2" Grid.Column="0" Mode="Circle" />
+        <LoadingIndicator Grid.Row="2" Grid.Column="1" Mode="Flow" />
         <LoadingIndicator Grid.Row="2" Grid.Column="2" Mode="Wave" />
+        <LoadingIndicator Grid.Row="2" Grid.Column="3" Mode="Chase" />
+        <LoadingIndicator Grid.Row="3" Grid.Column="0" Mode="Swing" />
+        <LoadingIndicator Grid.Row="3" Grid.Column="1" Mode="CircleFade" />
+        <LoadingIndicator Grid.Row="3" Grid.Column="2" Mode="Grid" />
+        <LoadingIndicator Grid.Row="3" Grid.Column="3" Mode="Fold" />
+        <LoadingIndicator Grid.Row="4" Grid.Column="0" Mode="Wander" />
+        <LoadingIndicator Grid.Row="4" Grid.Column="1" Mode="DualRing" />
+        <LoadingIndicator Grid.Row="4" Grid.Column="2" Mode="Ripple" />
+        <LoadingIndicator Grid.Row="4" Grid.Column="3" Mode="Spinner" />
     </Grid>
 
 </UserControl>

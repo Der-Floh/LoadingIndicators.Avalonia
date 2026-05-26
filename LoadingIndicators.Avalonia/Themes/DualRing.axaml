@@ -1,8 +1,8 @@
-﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:c="using:LoadingIndicators.Avalonia">
 
-    <ControlTheme x:Key="Arc" TargetType="c:LoadingIndicator"
+    <ControlTheme x:Key="DualRing" TargetType="c:LoadingIndicator"
                   BasedOn="{StaticResource LoadingIndicatorBase}">
         <Setter Property="Thickness" Value="8" />
         <Setter Property="Template">
@@ -29,20 +29,20 @@
                         </Style>
 
                         <Style Selector="Arc">
-                            <Setter Property="Margin" Value="5" />
+                            <Setter Property="Margin" Value="8" />
                             <Setter Property="MinWidth" Value="64" />
                             <Setter Property="MinHeight" Value="64" />
-                            <Setter Property="StrokeLineCap" Value="Round" />
+                            <Setter Property="StrokeLineCap" Value="Flat" />
                         </Style>
                     </Border.Styles>
 
                     <Viewbox>
                         <Viewbox.Styles>
-                            <Style Selector="c|LoadingIndicator:inactive /template/ Arc" />
+                            <Style Selector="c|LoadingIndicator:inactive /template/ Grid#Spinner" />
 
-                            <Style Selector="c|LoadingIndicator:active /template/ Arc">
+                            <Style Selector="c|LoadingIndicator:active /template/ Grid#Spinner">
                                 <Style.Animations>
-                                    <Animation Duration="0:0:2.000"
+                                    <Animation Duration="0:0:1.200"
                                                IterationCount="Infinite"
                                                SpeedRatio="{Binding $parent[c:LoadingIndicator].SpeedRatio}">
 
@@ -58,10 +58,24 @@
                             </Style>
                         </Viewbox.Styles>
 
-                        <Arc Stroke="{TemplateBinding Foreground}"
-                             StrokeThickness="{TemplateBinding Thickness}"
-                             StartAngle="-90"
-                             SweepAngle="-270" />
+                        <Grid x:Name="Spinner"
+                              Width="80"
+                              Height="80"
+                              RenderTransformOrigin="50%,50%">
+                            <Grid.RenderTransform>
+                                <RotateTransform Angle="0" />
+                            </Grid.RenderTransform>
+
+                            <Arc Stroke="{TemplateBinding Foreground}"
+                                 StrokeThickness="{TemplateBinding Thickness}"
+                                 StartAngle="-45"
+                                 SweepAngle="-90" />
+
+                            <Arc Stroke="{TemplateBinding Foreground}"
+                                 StrokeThickness="{TemplateBinding Thickness}"
+                                 StartAngle="135"
+                                 SweepAngle="-90" />
+                        </Grid>
                     </Viewbox>
                 </Border>
             </ControlTemplate>
