@@ -44,9 +44,14 @@ public class LoadingIndicator : TemplatedControl
     }
 
     private static Dictionary<LoadingIndicatorMode, ControlTheme>? _themes;
+    private bool? _animating;
+    private bool _attached;
+    private readonly AncestorPropertyTracker _ancestorVisibility;
 
     public LoadingIndicator()
     {
+        _ancestorVisibility = new AncestorPropertyTracker(this, IsVisibleProperty);
+        _ancestorVisibility.Changed += (_, _) => UpdateVisualStates();
         UpdateTheme();
     }
 
@@ -59,10 +64,26 @@ public class LoadingIndicator : TemplatedControl
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
-        if (change.Property == IsActiveProperty)
+        if (change.Property == IsActiveProperty || change.Property == IsVisibleProperty)
             UpdateVisualStates();
         else if (change.Property == ModeProperty)
             UpdateTheme();
+    }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+        _attached = true;
+        _ancestorVisibility.Rebuild();
+        UpdateVisualStates();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnDetachedFromVisualTree(e);
+        _attached = false;
+        _ancestorVisibility.Clear();
+        UpdateVisualStates();
     }
 
     private static bool TryGetThemes(out Dictionary<LoadingIndicatorMode, ControlTheme> controlThemes)
@@ -102,8 +123,13 @@ public class LoadingIndicator : TemplatedControl
 
     private void UpdateVisualStates()
     {
+        var animating = IsActive && _attached && IsEffectivelyVisible;
+        if (_animating == animating)
+            return;
+        _animating = animating;
+
         PseudoClasses.Remove(ACTIVE_STATE);
         PseudoClasses.Remove(INACTIVE_STATE);
-        PseudoClasses.Add(IsActive ? ACTIVE_STATE : INACTIVE_STATE);
+        PseudoClasses.Add(animating ? ACTIVE_STATE : INACTIVE_STATE);
     }
 }
