@@ -7,63 +7,85 @@
 /// </summary>
 public enum LoadingIndicatorMode
 {
-    /// <summary>The <c>Arc</c> theme.</summary>
+    /// <summary>A single 270° arc that spins continuously.</summary>
     Arc,
 
-    /// <summary>The <c>ArcEase</c> theme.</summary>
+    /// <summary>
+    /// A short quarter-arc spinning around a faint full-circle track with cubic ease-in-out easing.
+    /// </summary>
     ArcEase,
 
-    /// <summary>The <c>ArcGrow</c> theme.</summary>
+    /// <summary>
+    /// Two concentric arcs where the outer rotates fully and the inner oscillates, varying the gap.
+    /// </summary>
     ArcGrow,
 
-    /// <summary>The <c>Arcs</c> theme.</summary>
+    /// <summary>Two concentric arcs counter-rotating at different speeds.</summary>
     Arcs,
 
-    /// <summary>The <c>ArcsRing</c> theme.</summary>
+    /// <summary>
+    /// Short arc segments arranged in a ring that flash bright in sequence with staggered delays.
+    /// </summary>
     ArcsRing,
 
-    /// <summary>The <c>Bounce</c> theme.</summary>
+    /// <summary>
+    /// Two overlapping circles that alternately grow and shrink with a half-cycle offset.
+    /// </summary>
     Bounce,
 
-    /// <summary>The <c>Plane</c> theme.</summary>
+    /// <summary>
+    /// A rectangle that alternately collapses vertically then horizontally, simulating a plane flip.
+    /// </summary>
     Plane,
 
-    /// <summary>The <c>Pulse</c> theme.</summary>
+    /// <summary>
+    /// A filled circle that expands from nothing while fading out, creating a soft pulse effect.
+    /// </summary>
     Pulse,
 
-    /// <summary>The <c>Circle</c> theme.</summary>
+    /// <summary>Small dots arranged in a circle that pulse in and out in sequence.</summary>
     Circle,
 
-    /// <summary>The <c>Flow</c> theme.</summary>
+    /// <summary>Three dots that sequentially pop in and out with staggered delays.</summary>
     Flow,
 
-    /// <summary>The <c>Wave</c> theme.</summary>
+    /// <summary>Five vertical bars that scale up and down in a rolling wave pattern.</summary>
     Wave,
 
-    /// <summary>The <c>Chase</c> theme.</summary>
+    /// <summary>
+    /// Six dots orbit in a ring while shrinking and growing in a staggered chase pattern.
+    /// </summary>
     Chase,
 
-    /// <summary>The <c>CircleFade</c> theme.</summary>
+    /// <summary>Twelve dots arranged in a ring that fade in sequence around the circle.</summary>
     CircleFade,
 
-    /// <summary>The <c>Swing</c> theme.</summary>
+    /// <summary>
+    /// Two opposite dots rotate around the center while growing and shrinking out of phase.
+    /// </summary>
     Swing,
 
-    /// <summary>The <c>Grid</c> theme.</summary>
+    /// <summary>Nine squares collapse and restore in a diagonal wave across a 3x3 grid.</summary>
     Grid,
 
-    /// <summary>The <c>Fold</c> theme.</summary>
+    /// <summary>Four square faces fold in sequence around a central diamond silhouette.</summary>
     Fold,
 
-    /// <summary>The <c>Wander</c> theme.</summary>
+    /// <summary>
+    /// Two squares wander around a square path while rotating and shrinking at alternating corners.
+    /// </summary>
     Wander,
 
-    /// <summary>The <c>DualRing</c> theme.</summary>
+    /// <summary>Two opposing ring segments rotate continuously around the center.</summary>
     DualRing,
 
-    /// <summary>The <c>Ripple</c> theme.</summary>
+    /// <summary>
+    /// Two stroked rings expand from the center in a half-cycle stagger while fading away.
+    /// </summary>
     Ripple,
 
-    /// <summary>The <c>Spinner</c> theme.</summary>
+    /// <summary>
+    /// Twelve radial bars form a rotating spinner with a linear trailing fade gradient.
+    /// </summary>
     Spinner
 }

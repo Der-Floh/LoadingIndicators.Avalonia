@@ -6,11 +6,20 @@ using Avalonia.Styling;
 namespace LoadingIndicators.Avalonia;
 
 /// <summary>
-/// An animated loading indicator. The animation is driven by the <c>:active</c> and
-/// <c>:inactive</c> pseudo-classes, which follow <see cref="IsActive"/> together with whether the
-/// control is in the visual tree and effectively visible, so an indicator scrolled out of view or
-/// inside a collapsed parent stops animating instead of burning frames.
+/// An animated loading indicator, in one of the styles of <see cref="LoadingIndicatorMode"/>.
+/// The animation is driven by the <c>:active</c> and <c>:inactive</c> pseudo-classes, which follow
+/// <see cref="IsActive"/> together with whether the control is in the visual tree and effectively
+/// visible, so an indicator scrolled out of view or inside a collapsed parent stops animating
+/// instead of burning frames.
 /// </summary>
+/// <remarks>
+/// The animation is drawn in the control's <c>Foreground</c>, which defaults to the FluentTheme
+/// accent colour and can be overridden per instance. The styles have to be included in the
+/// application for the themes to resolve:
+/// <code>
+/// &lt;StyleInclude Source="avares://LoadingIndicators.Avalonia/LoadingIndicators.axaml" /&gt;
+/// </code>
+/// </remarks>
 [PseudoClasses(INACTIVE_STATE, ACTIVE_STATE)]
 public class LoadingIndicator : TemplatedControl
 {
@@ -46,8 +55,9 @@ public class LoadingIndicator : TemplatedControl
     }
 
     /// <summary>
-    /// Which animation to show. The value names the control theme that is applied, so it has no
-    /// effect unless that theme is in the application resources.
+    /// Which animation to show. Defaults to <see cref="LoadingIndicatorMode.Arc"/>. The value names
+    /// the control theme that is applied, so it has no effect unless that theme is in the
+    /// application resources.
     /// </summary>
     public LoadingIndicatorMode Mode
     {
