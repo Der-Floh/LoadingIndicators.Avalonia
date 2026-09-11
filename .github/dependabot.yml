@@ -19,8 +19,6 @@ updates:
     commit-message:
       prefix: deps
     groups:
-      # The demo pins these to one version on purpose. Separate pull requests would
-      # raise them one at a time and break that.
       avalonia:
         patterns:
           - Avalonia
