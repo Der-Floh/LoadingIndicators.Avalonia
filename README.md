@@ -2,6 +2,7 @@
 
 [![NuGet Version](https://img.shields.io/nuget/vpre/LoadingIndicators.Avalonia.New)](https://www.nuget.org/packages/LoadingIndicators.Avalonia.New)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/LoadingIndicators.Avalonia.New)](https://www.nuget.org/packages/LoadingIndicators.Avalonia.New)
+[![CI](https://github.com/Der-Floh/LoadingIndicators.Avalonia/actions/workflows/ci.yml/badge.svg)](https://github.com/Der-Floh/LoadingIndicators.Avalonia/actions/workflows/ci.yml)
 
 ![Demo](https://raw.githubusercontent.com/der-floh/LoadingIndicators.Avalonia/master/Assets/demo.gif)
 
