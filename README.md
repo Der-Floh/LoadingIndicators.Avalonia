@@ -41,6 +41,12 @@ Add the styles to `App.axaml` so all `LoadingIndicator` controls in your applica
 </Application.Styles>
 ```
 
+Or register them from code, which a trimmer can follow, so the themes survive trimming and AOT:
+
+```csharp
+Styles.Add(new LoadingIndicatorStyles());
+```
+
 ### Basic Usage
 
 Place a `LoadingIndicator` in any view and bind `IsActive` to your view-model's busy flag:
