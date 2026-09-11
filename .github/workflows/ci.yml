@@ -18,5 +18,4 @@ jobs:
     with:
       project-path: LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
       package-id: LoadingIndicators.Avalonia.New
-      excluded-rules: PackageIdAvailableOnNuGetOrg,XmlDocumentationMustBePresent
       excluded-rule-ids: "112,113"

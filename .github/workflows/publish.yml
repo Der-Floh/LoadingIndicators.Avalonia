@@ -17,7 +17,6 @@ env:
   PROJECT_PATH: LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
   PACKAGE_ID: LoadingIndicators.Avalonia.New
   ARTIFACTS_PATH: artifacts
-  EXCLUDED_RULES: PackageIdAvailableOnNuGetOrg,XmlDocumentationMustBePresent
   EXCLUDED_RULE_IDS: "112,113"
   NUGET_USER: Der-Floh
 
@@ -52,7 +51,6 @@ jobs:
           package-dir: ${{ env.ARTIFACTS_PATH }}
           package-id: ${{ env.PACKAGE_ID }}
           version: ${{ steps.version.outputs.value }}
-          excluded-rules: ${{ env.EXCLUDED_RULES }}
           excluded-rule-ids: ${{ env.EXCLUDED_RULE_IDS }}
 
       - name: Upload to Release

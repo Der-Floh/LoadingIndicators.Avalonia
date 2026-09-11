@@ -5,6 +5,12 @@ using Avalonia.Styling;
 
 namespace LoadingIndicators.Avalonia;
 
+/// <summary>
+/// An animated loading indicator. The animation is driven by the <c>:active</c> and
+/// <c>:inactive</c> pseudo-classes, which follow <see cref="IsActive"/> together with whether the
+/// control is in the visual tree and effectively visible, so an indicator scrolled out of view or
+/// inside a collapsed parent stops animating instead of burning frames.
+/// </summary>
 [PseudoClasses(INACTIVE_STATE, ACTIVE_STATE)]
 public class LoadingIndicator : TemplatedControl
 {
@@ -12,31 +18,56 @@ public class LoadingIndicator : TemplatedControl
     private const string ACTIVE_STATE = ":active";
 
     // ReSharper disable InconsistentNaming
+    /// <summary>Identifies the <see cref="IsActive"/> property.</summary>
     public static readonly StyledProperty<bool> IsActiveProperty =
         AvaloniaProperty.Register<LoadingIndicator, bool>(nameof(IsActive), true);
+
+    /// <summary>Identifies the <see cref="Mode"/> property.</summary>
     public static readonly StyledProperty<LoadingIndicatorMode> ModeProperty =
         AvaloniaProperty.Register<LoadingIndicator, LoadingIndicatorMode>(nameof(Mode));
+
+    /// <summary>Identifies the <see cref="SpeedRatio"/> property.</summary>
     public static readonly StyledProperty<double> SpeedRatioProperty =
         AvaloniaProperty.Register<LoadingIndicator, double>(nameof(SpeedRatio), 1.0);
+
+    /// <summary>Identifies the <see cref="Thickness"/> property.</summary>
     public static readonly StyledProperty<double> ThicknessProperty =
         AvaloniaProperty.Register<LoadingIndicator, double>(nameof(Thickness), 4);
     // ReSharper restore InconsistentNaming
 
+    /// <summary>
+    /// Whether the indicator should animate. Defaults to <see langword="true"/>. Setting it does
+    /// not force animation on its own: the control also has to be attached and effectively visible.
+    /// </summary>
     public bool IsActive
     {
         get => GetValue(IsActiveProperty);
         set => SetValue(IsActiveProperty, value);
     }
+
+    /// <summary>
+    /// Which animation to show. The value names the control theme that is applied, so it has no
+    /// effect unless that theme is in the application resources.
+    /// </summary>
     public LoadingIndicatorMode Mode
     {
         get => GetValue(ModeProperty);
         set => SetValue(ModeProperty, value);
     }
+
+    /// <summary>
+    /// Multiplier applied to the animation speed. Defaults to <c>1.0</c>; higher is faster.
+    /// </summary>
     public double SpeedRatio
     {
         get => GetValue(SpeedRatioProperty);
         set => SetValue(SpeedRatioProperty, value);
     }
+
+    /// <summary>
+    /// Stroke thickness of the animated shapes, in device independent pixels. Defaults to <c>4</c>.
+    /// Themes that draw no strokes ignore it.
+    /// </summary>
     public double Thickness
     {
         get => GetValue(ThicknessProperty);
@@ -48,6 +79,9 @@ public class LoadingIndicator : TemplatedControl
     private bool _attached;
     private readonly AncestorPropertyTracker _ancestorVisibility;
 
+    /// <summary>
+    /// Creates a loading indicator and applies the control theme for the current <see cref="Mode"/>.
+    /// </summary>
     public LoadingIndicator()
     {
         _ancestorVisibility = new AncestorPropertyTracker(this, IsVisibleProperty);
@@ -55,12 +89,14 @@ public class LoadingIndicator : TemplatedControl
         UpdateTheme();
     }
 
+    /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
         base.OnApplyTemplate(e);
         UpdateVisualStates();
     }
 
+    /// <inheritdoc />
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -70,6 +106,7 @@ public class LoadingIndicator : TemplatedControl
             UpdateTheme();
     }
 
+    /// <inheritdoc />
     protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnAttachedToVisualTree(e);
@@ -78,6 +115,7 @@ public class LoadingIndicator : TemplatedControl
         UpdateVisualStates();
     }
 
+    /// <inheritdoc />
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);

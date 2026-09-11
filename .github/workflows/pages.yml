@@ -17,4 +17,3 @@ jobs:
     uses: Der-Floh/Der-Floh/.github/workflows/app-pages.yml@v1
     with:
       project-path: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/LoadingIndicators.Avalonia.Demo.Browser.csproj
-      stamp-version: false
