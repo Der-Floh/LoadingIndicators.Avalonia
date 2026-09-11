@@ -1,0 +1,31 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: deps
+    groups:
+      # The demo pins these to one version on purpose. Separate pull requests would
+      # raise them one at a time and break that.
+      avalonia:
+        patterns:
+          - Avalonia
+          - Avalonia.*
+          - AvaloniaUI.*
+      microsoft:
+        patterns:
+          - Microsoft.*
