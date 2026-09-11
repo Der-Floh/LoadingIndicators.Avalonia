@@ -2,11 +2,24 @@ name: Publish NuGet Package
 
 on:
   release:
-    types: [ published ]
+    types: [published]
+
+concurrency:
+  group: nuget-publish
+  cancel-in-progress: false
 
 permissions:
   contents: write
   id-token: write
+  attestations: write
+
+env:
+  PROJECT_PATH: LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
+  PACKAGE_ID: LoadingIndicators.Avalonia.New
+  ARTIFACTS_PATH: artifacts
+  EXCLUDED_RULES: PackageIdAvailableOnNuGetOrg,XmlDocumentationMustBePresent
+  EXCLUDED_RULE_IDS: "112,113"
+  NUGET_USER: Der-Floh
 
 jobs:
   publish:
@@ -14,50 +27,52 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
-      - name: Extract version from tag
+      - name: Resolve version
         id: version
-        run: echo "value=$(echo '${{ github.ref_name }}' | sed 's/^v//')" >>
-          $GITHUB_OUTPUT
+        uses: Der-Floh/Der-Floh/.github/actions/resolve-version@v1
+        with:
+          tag: ${{ github.event.release.tag_name }}
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: "8.0.x"
-
-      - name: Restore
-        run: dotnet restore LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
-
-      - name: Build
-        run: dotnet build LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj
-          -c Release --no-restore -p:GeneratePackageOnBuild=false
+        uses: Der-Floh/Der-Floh/.github/actions/setup-dotnet@v1
 
       - name: Pack
-        run: dotnet pack LoadingIndicators.Avalonia/LoadingIndicators.Avalonia.csproj -c
-          Release --no-build -o ./artifacts -p:Version=${{
-          steps.version.outputs.value }}
+        uses: Der-Floh/Der-Floh/.github/actions/pack@v1
+        with:
+          project-path: ${{ env.PROJECT_PATH }}
+          version: ${{ steps.version.outputs.value }}
+          output-dir: ${{ env.ARTIFACTS_PATH }}
+
+      - name: Verify package
+        id: package
+        uses: Der-Floh/Der-Floh/.github/actions/verify-package@v1
+        with:
+          package-dir: ${{ env.ARTIFACTS_PATH }}
+          package-id: ${{ env.PACKAGE_ID }}
+          version: ${{ steps.version.outputs.value }}
+          excluded-rules: ${{ env.EXCLUDED_RULES }}
+          excluded-rule-ids: ${{ env.EXCLUDED_RULE_IDS }}
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v3
         with:
+          fail_on_unmatched_files: true
           files: |
-            ./artifacts/*.nupkg
-            ./artifacts/*.snupkg
+            ./${{ env.ARTIFACTS_PATH }}/*.nupkg
+            ./${{ env.ARTIFACTS_PATH }}/*.snupkg
 
-      - name: NuGet login
-        uses: NuGet/login@v1
-        id: login
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
         with:
-          user: Der-Floh
+          subject-path: |
+            ./${{ env.ARTIFACTS_PATH }}/*.nupkg
+            ./${{ env.ARTIFACTS_PATH }}/*.snupkg
 
       - name: Publish to NuGet.org
-        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{
-          steps.login.outputs.NUGET_API_KEY }}" --source
-          "https://api.nuget.org/v3/index.json" --skip-duplicate
-
-      - name: Publish symbols to NuGet.org
-        run: dotnet nuget push "./artifacts/*.snupkg" --api-key "${{
-          steps.login.outputs.NUGET_API_KEY }}" --source
-          "https://api.nuget.org/v3/index.json"
-        continue-on-error: true
+        uses: Der-Floh/Der-Floh/.github/actions/publish-nuget@v1
+        with:
+          package-path: ${{ steps.package.outputs.package-path }}
+          symbols-path: ${{ steps.package.outputs.symbols-path }}
+          nuget-user: ${{ env.NUGET_USER }}
