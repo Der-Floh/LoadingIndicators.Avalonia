@@ -1,12 +1,17 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches: [master]
-  workflow_dispatch: {}
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to publish (e.g. 4.0.3). Defaults to the latest release tag.
+        required: false
+        type: string
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}
   cancel-in-progress: true
 
 permissions:
@@ -17,3 +22,4 @@ jobs:
     uses: Der-Floh/Der-Floh/.github/workflows/app-pages.yml@v1
     with:
       project-path: LoadingIndicators.Avalonia.Demo/LoadingIndicators.Avalonia.Demo.Browser/LoadingIndicators.Avalonia.Demo.Browser.csproj
+      version: ${{ inputs.version }}
